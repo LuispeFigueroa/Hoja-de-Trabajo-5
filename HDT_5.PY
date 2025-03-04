@@ -1,3 +1,7 @@
+#HOja de Trabajo 5, Algortimos y Estructuras de Datos
+#Luis Pedro FIgueroa 24087
+#Adrian Penagos #24914
+
 import simpy
 import random
 import numpy as np
