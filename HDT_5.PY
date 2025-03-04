@@ -60,3 +60,34 @@ def correr_simulacion(num_procesos, intervalo):
     env.process(generar_procesos(env, ram, cpu, intervalo))
     env.run(until=1000)
     return np.mean(tiempo_final), np.std(tiempo_final)
+
+# Ejecutar simulaciones y graficar resultados
+resultados = {}
+for intervalo in INTERVALOS:
+    tiempos_promedio = []
+    desviaciones = []
+    for n in NUM_PROCESOS:
+        promedio, desviacion = correr_simulacion(n, intervalo)
+        tiempos_promedio.append(promedio)
+        desviaciones.append(desviacion)
+    resultados[intervalo] = (NUM_PROCESOS, tiempos_promedio, desviaciones)
+
+# Graficar resultados con mejoras visuales
+plt.figure(figsize=(10, 6))
+colores = ['b', 'g', 'r']
+marcadores = ['o', 's', 'D']
+
+for i, (intervalo, datos) in enumerate(resultados.items()):
+    plt.errorbar(
+        datos[0], datos[1], yerr=datos[2], 
+        label=f'Intervalo {intervalo}', 
+        fmt=marcadores[i], color=colores[i], 
+        capsize=5, capthick=2, markersize=6, linewidth=2
+    )
+
+plt.xlabel("Número de Procesos", fontsize=14)
+plt.ylabel("Tiempo Promedio", fontsize=14)
+plt.title("Impacto del Intervalo de Llegada en el Tiempo Promedio de Procesos", fontsize=16)
+plt.legend(fontsize=12)
+plt.grid(True, linestyle="--", alpha=0.7)
+plt.show()
