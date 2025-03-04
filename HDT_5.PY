@@ -77,21 +77,41 @@ for intervalo in INTERVALOS:
     resultados[intervalo] = (NUM_PROCESOS, tiempos_promedio, desviaciones)
 
 # Graficar resultados con mejoras visuales
-plt.figure(figsize=(10, 6))
-colores = ['b', 'g', 'r']
-marcadores = ['o', 's', 'D']
 
-for i, (intervalo, datos) in enumerate(resultados.items()):
-    plt.errorbar(
-        datos[0], datos[1], yerr=datos[2], 
-        label=f'Intervalo {intervalo}', 
-        fmt=marcadores[i], color=colores[i], 
-        capsize=5, capthick=2, markersize=6, linewidth=2
-    )
+plt.figure(figsize = (12, 6))
 
-plt.xlabel("Número de Procesos", fontsize=14)
-plt.ylabel("Tiempo Promedio", fontsize=14)
-plt.title("Impacto del Intervalo de Llegada en el Tiempo Promedio de Procesos", fontsize=16)
-plt.legend(fontsize=12)
-plt.grid(True, linestyle="--", alpha=0.7)
-plt.show()
+#ANCHO de las Barras Horizontales
+ancho_barras= 0.2
+#Definir la posicion de cada barra en el eje X
+x =np.arange(len(NUM_PROCESOS))
+#Colores azul, verde y rojo para cada intervalo y sus barras
+colores = ['b','g','r']
+
+#Titulo de grafica 
+plt.title("Grafica de comparacion entre cantidad de procesos y promedio de tiempo", fontsize = 17)
+plt.legend( fontsize = 12)
+
+
+for i, intervalo in enumerate(INTERVALOS):
+    tiempos_promedio = resultados[intervalo][1]
+
+    plt.bar(x + i * ancho_barras, #Esto hace que la barra se mueva y asi esten separadas 
+            tiempos_promedio,
+            width= ancho_barras,
+            color = colores[i],
+            label = f'Intervalo {intervalo}'
+            )
+
+#INformacion en EJE X 
+plt.xticks(x+ ancho_barras * (len(INTERVALOS)-1)/2, NUM_PROCESOS)
+plt.xlabel('Numero de Procesos', fontsize = 15)
+#Informacion eje Y
+plt.ylabel('Promedio de Tiempo', fontsize = 14)
+
+#Titulo de grafica 
+plt.title("Grafica de comparacion entre cantidad de procesos y promedio de tiempo", fontsize = 17)
+plt.legend( fontsize = 12)
+
+#Definir la Grid, o
+plt.grid(True, linestyle= '--', alpha = 0.7, axis='y')
+plt.show() #Mostrar la grafica
